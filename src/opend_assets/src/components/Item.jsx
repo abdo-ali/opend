@@ -9,8 +9,7 @@ function Item(props) {
   const [owner, setOwner] = React.useState();
   const [image, setImage] = React.useState();
 
-  const id = Principal.fromText(props.id);
-  console.log("NFT ID: " + id.toText());
+  const id = props.id;
 
   const localHost = "http://localhost:8080/";
   const agent = new HttpAgent({ host: localHost });
