@@ -12,6 +12,9 @@ function Item(props) {
   const [image, setImage] = useState();
   const [button, setButton] = useState();
   const [priceInput, setPriceInput] = useState();
+  const [loaderHidden, setLoaderHidden] = useState(true);
+  const [blurStyle, setBlurStyle] = useState();
+  const [sellStatus, setSellStatus] = useState();
 
   const id = props.id;
 
@@ -46,7 +49,15 @@ function Item(props) {
       setName(name);
       setOwner(owner.toText());
       setImage(image);
-      setButton(<Button handleClick={handelSell} text="Sell" />);
+
+      const nftIsListed = await opend.isListed(id);
+      if (nftIsListed) {
+        setButton("OpenD");
+        setBlurStyle({ filter: "blur(4px)" });
+        setSellStatus("Listed");
+      } else {
+        setButton(<Button handleClick={handelSell} text="Sell" />);
+      }
     } catch (err) {
       console.error("❌ خطأ أثناء جلب اسم الـ NFT:", err);
     }
@@ -55,6 +66,7 @@ function Item(props) {
   useEffect(() => {
     loadNFT();
   }, []);
+
   let price;
   function handelSell() {
     console.log("clicked");
@@ -69,7 +81,10 @@ function Item(props) {
     );
     setButton(<Button handleClick={sellItem} text="Confirm" />);
   }
+
   async function sellItem() {
+    setBlurStyle({ filter: "blur(4px)" });
+    setLoaderHidden(false);
     console.log("confirm clicked with price: " + price);
     const listingResult = await opend.listItem(id, Number(price));
     console.log("Listing Result: ", listingResult);
@@ -79,10 +94,11 @@ function Item(props) {
       const transferResult = await NFTActor.transferOwnership(opendCanisterId);
       console.log("Transfer Result: ", transferResult);
       if (transferResult == "success.") {
-        setButton(<p className="purple-text">Item listed successfully!</p>);
-        setPriceInput(null);
-      } else {
-        setButton(<p className="red-text">Error in transferring ownership.</p>);
+        setLoaderHidden(true);
+        setButton();
+        setPriceInput();
+        setOwner("opend");
+        setSellStatus("Listed");
       }
     }
   }
@@ -93,11 +109,18 @@ function Item(props) {
         <img
           className="disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img"
           src={image}
+          style={blurStyle}
         />
+        <div hidden={loaderHidden} className={`lds-ellipsis`}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
         <div className="disCardContent-root">
           <h2 className="disTypography-root makeStyles-bodyText-24 disTypography-h5 disTypography-gutterBottom">
             {name}
-            <span className="purple-text"></span>
+            <span className="purple-text"> {sellStatus}</span>
           </h2>
           <p className="disTypography-root makeStyles-bodyText-24 disTypography-body2 disTypography-colorTextSecondary">
             Owner: {owner}

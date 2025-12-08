@@ -73,4 +73,12 @@ actor OpenD {
     public query func getOpendCanisterID() : async Principal {
         return Principal.fromActor(OpenD);
     };
+
+    public query func isListed(id: Principal) : async Bool {
+        let listing = mapOfListing.get(id);
+        switch (listing) {
+            case (null) return false;
+            case (?_) return true;
+        };
+    };
 };

@@ -3,4 +3,5 @@ service : {
   getContent: () -> (vec nat8);
   getName: () -> (text);
   getOwner: () -> (principal);
+  transferOwnership: (principal) -> (text);
 }
