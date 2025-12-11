@@ -9,10 +9,19 @@ import { opend } from "../../../declarations/opend";
 
 function Header() {
   const [userOwnGallery, setUserOwnGallery] = useState();
+  const [listingGallery, setListingGallery] = useState();
   async function getNFTs() {
     const userNFTsIDs = await opend.getOwnedNFTs(CURRENT_USER_ID);
     console.log("User NFT IDs:", userNFTsIDs);
-    setUserOwnGallery(<Gallery title="My NFTs" ids={userNFTsIDs} />);
+    setUserOwnGallery(
+      <Gallery title="My NFTs" ids={userNFTsIDs} role="collection" />
+    );
+
+    const listedNFTsIDs = await opend.getListedNFTs();
+    console.log("Listed NFT IDs:", listedNFTsIDs);
+    setListingGallery(
+      <Gallery title="Discover NFTs" ids={listedNFTsIDs} role="discover" />
+    );
   }
 
   useEffect(() => {
@@ -48,9 +57,7 @@ function Header() {
         <Route exact path="/">
           <img className="bottom-space" src={homeImage} />
         </Route>
-        <Route path="/discover">
-          <h1>Discover</h1>
-        </Route>
+        <Route path="/discover">{listingGallery}</Route>
         <Route path="/minter">
           <Minter />
         </Route>

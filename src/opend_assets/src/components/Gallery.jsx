@@ -7,7 +7,11 @@ function Gallery(props) {
 
   function fetchItems() {
     if (props.ids != undefined) {
-      setItems(props.ids.map((id) => <Item key={id.toText()} id={id} />));
+      setItems(
+        props.ids.map((id) => (
+          <Item key={id.toText()} id={id} role={props.role} />
+        ))
+      );
     }
   }
 
