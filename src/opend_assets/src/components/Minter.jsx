@@ -14,7 +14,7 @@ function Minter() {
     const imageFile = data.image[0];
     const imageArrayBuffer = await imageFile.arrayBuffer();
     const imageUint8Array = [...new Uint8Array(imageArrayBuffer)];
-
+    // Call the mint function from the opend canister
     const newNFTID = await opend.mint(imageUint8Array, name);
     console.log("تم إنشاء NFT جديد بالمعرف: " + newNFTID.toText());
     setNftPrincipal(newNFTID.toText());

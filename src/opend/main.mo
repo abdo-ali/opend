@@ -107,7 +107,7 @@ actor OpenD {
         };
         return listing.itemPrice;
     };
-
+    // to complete the purchase of a listed NFT and transfer its ownership to the buyer
     public shared(msg) func completePurchase(id: Principal, ownerId: Principal,newOwnerId: Principal) : async Text {
         var purchasedNFT : NFTACtorClass.NFT = switch (mapOfNFTs.get(id)) {
             case (null) return "NFT does not exist.";

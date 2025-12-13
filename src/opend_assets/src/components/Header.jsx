@@ -10,13 +10,14 @@ import { opend } from "../../../declarations/opend";
 function Header() {
   const [userOwnGallery, setUserOwnGallery] = useState();
   const [listingGallery, setListingGallery] = useState();
+  // function to fetch NFTs for user collection and listing page
   async function getNFTs() {
     const userNFTsIDs = await opend.getOwnedNFTs(CURRENT_USER_ID);
     console.log("User NFT IDs:", userNFTsIDs);
     setUserOwnGallery(
       <Gallery title="My NFTs" ids={userNFTsIDs} role="collection" />
     );
-
+    // Fetch listed NFTs for the discover page
     const listedNFTsIDs = await opend.getListedNFTs();
     console.log("Listed NFT IDs:", listedNFTsIDs);
     setListingGallery(
@@ -27,7 +28,7 @@ function Header() {
   useEffect(() => {
     getNFTs();
   }, []);
-
+  // Header component with navigation links and routing setup
   return (
     <BrowserRouter forceRefresh={true}>
       <div className="app-root-1">

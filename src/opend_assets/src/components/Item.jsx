@@ -22,11 +22,11 @@ function Item(props) {
   const [shouldDisplay, setShouldDisplay] = useState(true);
 
   const id = props.id;
-
+  // Create an agent to interact with the local replica
   const localHost = "http://localhost:8080/";
   const agent = new HttpAgent({ host: localHost });
   let NFTActor;
-
+  // Fetch the root key for certificate validation during development
   if (process.env.NODE_ENV !== "production") {
     agent.fetchRootKey().catch((err) => {
       console.warn("⚠️ فشل تحميل root key:", err);
@@ -41,7 +41,7 @@ function Item(props) {
     });
 
     console.log("NFT Actor:", NFTActor);
-
+    // Fetch NFT details and update state variables
     try {
       const name = await NFTActor.getName();
       const owner = await NFTActor.getOwner();
@@ -77,11 +77,11 @@ function Item(props) {
       console.error("❌ خطأ أثناء جلب اسم الـ NFT:", err);
     }
   }
-
+  // Load NFT data when the component mounts
   useEffect(() => {
     loadNFT();
   }, []);
-
+  // function to handle the sell process
   let price;
   function handelSell() {
     console.log("clicked");
@@ -96,7 +96,7 @@ function Item(props) {
     );
     setButton(<Button handleClick={sellItem} text="Confirm" />);
   }
-
+  // function to sell the item
   async function sellItem() {
     setBlurStyle({ filter: "blur(4px)" });
     setLoaderHidden(false);
@@ -117,7 +117,7 @@ function Item(props) {
       }
     }
   }
-
+  // function to handle the buy process
   async function handelBuy() {
     console.log("Buy clicked");
     setLoaderHidden(false);
@@ -143,6 +143,7 @@ function Item(props) {
       setShouldDisplay(false);
     }
   }
+  // Render the component
   return (
     <div
       style={{ display: shouldDisplay ? "inline" : "none" }}

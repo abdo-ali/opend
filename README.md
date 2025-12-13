@@ -1,133 +1,195 @@
-Copyright 2022 London App Brewery LTD (www.appbrewery.com)
+# OpenD – NFT Marketplace on Internet Computer (ICP)
 
-The code in this tutorial project is licended under the Apache License, Version 2.0 (the "License");
-you may not use this project except in compliance with the License.
-You may obtain a copy of the License at
+OpenD is a decentralized NFT marketplace built on the **Internet Computer (ICP)**.
+It allows users to **mint NFTs**, **list them for sale**, **discover listed NFTs**, and **manage their personal NFT collections**.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+The project uses **Motoko** for backend canisters and **React** for the frontend, following ICP best practices with a clear separation between NFT logic, marketplace logic, and token accounting.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+---
 
-Here is the TL;DR version of the above licence:
-https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)
+## 📹 Demo Video
 
-# To Install and Run the Project
+Click on the image below to watch the demo on YouTube:
 
-1. start local dfx
+[![Watch the demo](src/opend_assets/assets/screenshots/home-page.png)](https://www.youtube.com/watch?v=O17JqA9Ym1k)
 
-```
+---
+
+## 📸 Screenshots
+
+> _Replace the image files with your own screenshots_
+
+### Home
+
+![Home Page](src/opend_assets/assets/screenshots/home-page.png)
+
+### Discover NFTs
+
+![Discover Page](src/opend_assets/assets/screenshots/decover-page.png)
+
+### Mint NFT
+
+![Mint Page](src/opend_assets/assets/screenshots/mint-page.png)
+![Minted](src/opend_assets/assets/screenshots/minted-page.png)
+
+### My NFTs
+
+![My NFTs Page](src/opend_assets/assets/screenshots/myNTS-page.png)
+![Sell](src/opend_assets/assets/screenshots/sell-nft.png)
+
+---
+
+## 🧠 Architecture Overview
+
+The project is composed of multiple canisters:
+
+- **OpenD Canister**
+
+  - Marketplace logic
+  - Listing NFTs for sale
+  - Buying NFTs
+  - Tracking ownership
+
+- **NFT Canisters**
+
+  - Each NFT is deployed as a separate canister
+  - Handles NFT metadata and ownership transfer
+
+- **Token Canister (External)**
+
+  - Used for tracking balances and payments
+  - **Deployed in a separate project**
+  - Integrated via canister calls
+
+🔗 **Token Canister Repository:**
+👉 _https://github.com/abdo-ali/token_
+
+---
+
+## 🛠 Tech Stack
+
+- **Internet Computer (ICP)**
+- **Motoko** (Backend Canisters)
+- **React.js** (Frontend)
+- **@dfinity/agent**
+- **DFX SDK**
+- **WebPack**
+
+---
+
+## Getting Started (Local Development)
+
+### 1️⃣ Start the local Internet Computer replica
+
+```bash
 dfx start --clean
 ```
 
-2. Run NPM server
+### 2️⃣ Install dependencies and run the frontend
 
-```
+```bash
+npm install
 npm start
 ```
 
-3. Deploy canisters
+### 3️⃣ Deploy canisters
 
-```
-dfx deploy --argument='("CryptoDunks #123", principal "imnip-motn2-ct3w5-thnbc-k5wfd-bxy36-niaxz-ybypr-bdrqt-nbxq4-2ae", (vec {137; 80; 78; 71; 13; 10; 26; 10; 0; 0; 0; 13; 73; 72; 68; 82; 0; 0; 0; 10; 0; 0; 0; 10; 8; 6; 0; 0; 0; 141; 50; 207; 189; 0; 0; 0; 1; 115; 82; 71; 66; 0; 174; 206; 28; 233; 0; 0; 0; 68; 101; 88; 73; 102; 77; 77; 0; 42; 0; 0; 0; 8; 0; 1; 135; 105; 0; 4; 0; 0; 0; 1; 0; 0; 0; 26; 0; 0; 0; 0; 0; 3; 160; 1; 0; 3; 0; 0; 0; 1; 0; 1; 0; 0; 160; 2; 0; 4; 0; 0; 0; 1; 0; 0; 0; 10; 160; 3; 0; 4; 0; 0; 0; 1; 0; 0; 0; 10; 0; 0; 0; 0; 59; 120; 184; 245; 0; 0; 0; 113; 73; 68; 65; 84; 24; 25; 133; 143; 203; 13; 128; 48; 12; 67; 147; 94; 97; 30; 24; 0; 198; 134; 1; 96; 30; 56; 151; 56; 212; 85; 68; 17; 88; 106; 243; 241; 235; 39; 42; 183; 114; 137; 12; 106; 73; 236; 105; 98; 227; 152; 6; 193; 42; 114; 40; 214; 126; 50; 52; 8; 74; 183; 108; 158; 159; 243; 40; 253; 186; 75; 122; 131; 64; 0; 160; 192; 168; 109; 241; 47; 244; 154; 152; 112; 237; 159; 252; 105; 64; 95; 48; 61; 12; 3; 61; 167; 244; 38; 33; 43; 148; 96; 3; 71; 8; 102; 4; 43; 140; 164; 168; 250; 23; 219; 242; 38; 84; 91; 18; 112; 63; 0; 0; 0; 0; 73; 69; 78; 68; 174; 66; 96; 130;}))'
-```
-
-4. Head to localhost
-
-http://localhost:8080/
-
-# Minter Else HTML
-
-```
- <div className="minter-container">
-        <h3 className="Typography-root makeStyles-title-99 Typography-h3 form-Typography-gutterBottom">
-          Minted!
-        </h3>
-        <div className="horizontal-center">
-        </div>
-      </div>
-
+```bash
+dfx deploy
 ```
 
-# Loader HTML
+### 4️⃣ Open the app in your browser
 
 ```
-<div className="lds-ellipsis">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+http://localhost:8080
 ```
 
-# Button HTML
+---
 
-```
-<div className="Chip-root makeStyles-chipBlue-108 Chip-clickable">
-            <span
-              onClick={}
-              className="form-Chip-label"
-            >
-              Sell
-            </span>
-            </div>
+## 🧪 Creating NFTs for Testing (CLI)
+
+### Mint an NFT
+
+```bash
+dfx canister call opend mint '(vec { ...image bytes... }, "CryptoDunks #123")'
 ```
 
-# Price Input HTML
+### List NFT for sale
 
-```
-<input
-        placeholder="Price in DANG"
-        type="number"
-        className="price-input"
-        value={}
-        onChange={}
-      />
+```bash
+dfx canister call opend listItem '(principal "<NFT_CANISTER_ID>", 2)'
 ```
 
-# Price Label HTML
+### Transfer NFT ownership to OpenD
 
-```
-<div className="disButtonBase-root disChip-root makeStyles-price-23 disChip-outlined">
-          <span className="disChip-label">23 DANG</span>
-        </div>
+```bash
+dfx canister call <NFT_CANISTER_ID> transferOwnership '(principal "<OPEND_CANISTER_ID>", true)'
 ```
 
-# Creating NFT for Testing
+---
 
-1. Mint an NFT on the command line to get NFT into mapOfNFTs:
+## 🔗 Connecting to the Token Canister
 
-```
-dfx canister call opend mint '(vec {137; 80; 78; 71; 13; 10; 26; 10; 0; 0; 0; 13; 73; 72; 68; 82; 0; 0; 0; 10; 0; 0; 0; 10; 8; 6; 0; 0; 0; 141; 50; 207; 189; 0; 0; 0; 1; 115; 82; 71; 66; 0; 174; 206; 28; 233; 0; 0; 0; 68; 101; 88; 73; 102; 77; 77; 0; 42; 0; 0; 0; 8; 0; 1; 135; 105; 0; 4; 0; 0; 0; 1; 0; 0; 0; 26; 0; 0; 0; 0; 0; 3; 160; 1; 0; 3; 0; 0; 0; 1; 0; 1; 0; 0; 160; 2; 0; 4; 0; 0; 0; 1; 0; 0; 0; 10; 160; 3; 0; 4; 0; 0; 0; 1; 0; 0; 0; 10; 0; 0; 0; 0; 59; 120; 184; 245; 0; 0; 0; 113; 73; 68; 65; 84; 24; 25; 133; 143; 203; 13; 128; 48; 12; 67; 147; 94; 97; 30; 24; 0; 198; 134; 1; 96; 30; 56; 151; 56; 212; 85; 68; 17; 88; 106; 243; 241; 235; 39; 42; 183; 114; 137; 12; 106; 73; 236; 105; 98; 227; 152; 6; 193; 42; 114; 40; 214; 126; 50; 52; 8; 74; 183; 108; 158; 159; 243; 40; 253; 186; 75; 122; 131; 64; 0; 160; 192; 168; 109; 241; 47; 244; 154; 152; 112; 237; 159; 252; 105; 64; 95; 48; 61; 12; 3; 61; 167; 244; 38; 33; 43; 148; 96; 3; 71; 8; 102; 4; 43; 140; 164; 168; 250; 23; 219; 242; 38; 84; 91; 18; 112; 63; 0; 0; 0; 0; 73; 69; 78; 68; 174; 66; 96; 130;}, "CryptoDunks #123")'
-```
+1. Copy the `token` declarations folder into your project
+2. Replace the token canister ID in the code:
 
-2. List the item into mapOfListings:
-
-```
-dfx canister call opend listItem '(principal "qjdve-lqaaa-aaaaa-aaaeq-cai", 2)'
+```js
+const dangPrincipal = Principal.fromText("<REPLACE_WITH_TOKEN_CANISTER_ID>");
 ```
 
-3. Get OpenD canister ID:
+The token canister is responsible for:
+
+- Tracking user balances
+- Handling transfers during NFT purchases
+
+---
+
+## 📂 Project Structure (Simplified)
+
+```text
+src/
+├── NFT/                # NFT canister (Motoko)
+├── opend/              # Marketplace canister (Motoko)
+├── declarations/       # Auto-generated canister bindings
+├── opend_assets/       # Frontend (React)
+```
+
+---
+
+## 📜 License
+
+### Apache License 2.0
+
+This project includes code originally provided as part of a tutorial by
+**London App Brewery LTD** ([https://www.appbrewery.com](https://www.appbrewery.com)).
+
+The original tutorial code is licensed under the **Apache License, Version 2.0**.
+
+You may obtain a copy of the License at:
 
 ```
-dfx canister id opend
+http://www.apache.org/licenses/LICENSE-2.0
 ```
 
-4. Transfer NFT to OpenD:
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an **"AS IS" BASIS**, WITHOUT WARRANTIES OR CONDITIONS OF
+ANY KIND, either express or implied.
 
-```
-dfx canister call qjdve-lqaaa-aaaaa-aaaeq-cai transferOwnership '(principal "ryjl3-tyaaa-aaaaa-aaaba-cai", true)'
-```
+A TL;DR version of the license:
+[https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)](https://tldrlegal.com/license/apache-license-2.0-%28apache-2.0%29)
 
-# Conneting to the Token Canister
+---
 
-1. Copy over the token declarations folder
+## 🙏 Credits
 
-2. Set the token canister id into the <REPLACE WITH TOKEN CANISTER ID>
+- Original tutorial by **London App Brewery**
+- Extended, refactored, and enhanced by **Abdelrahman Ali**
+- Architecture adapted for real-world Internet Computer (ICP) development
 
-```
-const dangPrincipal = Principal.fromText("<REPLACE WITH TOKEN CANISTER ID>");
-```
+---
+
+## 📌 Notes
+
+- This project is intended for **learning and portfolio purposes**
+- Token accounting is intentionally separated into an external canister to reflect
+  real-world decentralized architecture on ICP

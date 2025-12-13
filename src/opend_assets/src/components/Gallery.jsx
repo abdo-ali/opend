@@ -4,7 +4,7 @@ import { Principal } from "@dfinity/principal";
 
 function Gallery(props) {
   const [items, setItems] = useState();
-
+  // function to fetch and render Item components based on provided IDs
   function fetchItems() {
     if (props.ids != undefined) {
       setItems(
