@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import logo from "../../assets/logo.png";
 import { Actor, HttpAgent } from "@dfinity/agent";
 import { idlFactory } from "../../../declarations/nft";
+import { idlFactory as tokenIdlFactory } from "../../../declarations/token";
 import { Principal } from "@dfinity/principal";
 import Button from "./Button";
 import PriceLabel from "./PriceLabel";
@@ -18,6 +19,7 @@ function Item(props) {
   const [blurStyle, setBlurStyle] = useState();
   const [sellStatus, setSellStatus] = useState();
   const [priceLabel, setPriceLabel] = useState();
+  const [shouldDisplay, setShouldDisplay] = useState(true);
 
   const id = props.id;
 
@@ -118,10 +120,34 @@ function Item(props) {
 
   async function handelBuy() {
     console.log("Buy clicked");
-  }
+    setLoaderHidden(false);
+    const tokenActor = await Actor.createActor(tokenIdlFactory, {
+      agent,
+      canisterId: Principal.fromText("renrk-eyaaa-aaaaa-aaada-cai"), // Token canister ID from token local project in ic-projects/token local
+    });
+    const sellerId = await opend.getOriginalOwner(id);
+    const itemPrice = await opend.getListingNFTPrice(id);
 
+    const result = await tokenActor.transfer(sellerId, itemPrice);
+    console.log("Token Transfer Result: ", result);
+
+    if (result == "Success") {
+      // Handle successful purchase (e.g., update UI, notify user)
+      const transferResult = await opend.completePurchase(
+        id,
+        sellerId,
+        CURRENT_USER_ID
+      );
+      console.log("Purchase Result: ", transferResult);
+      setLoaderHidden(true);
+      setShouldDisplay(false);
+    }
+  }
   return (
-    <div className="disGrid-item">
+    <div
+      style={{ display: shouldDisplay ? "inline" : "none" }}
+      className="disGrid-item"
+    >
       <div className="disPaper-root disCard-root makeStyles-root-17 disPaper-elevation1 disPaper-rounded">
         <img
           className="disCardMedia-root makeStyles-image-19 disCardMedia-media disCardMedia-img"
