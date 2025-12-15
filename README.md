@@ -17,8 +17,6 @@ Click on the image below to watch the demo on YouTube:
 
 ## 📸 Screenshots
 
-> _Replace the image files with your own screenshots_
-
 ### Home
 
 ![Home Page](src/opend_assets/assets/screenshots/home-page.png)
